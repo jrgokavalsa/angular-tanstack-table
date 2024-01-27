@@ -2,6 +2,10 @@
 
 Angular-tanstack-table is a GitHub repository that provides an adapter for using tanstack table library in Angular applications. It allows you to create and customize data tables with features such as sorting, filtering, pagination, and more.
 
+## Demo Application
+
+https://jrgokavalsa.github.io/angular-tanstack-adapter/
+
 ## Prerequisites
 
 Before using this table component, ensure that you have the following prerequisites installed:
@@ -66,4 +70,4 @@ export class BasicComponent implements OnInit {
 - Selecting
 - \* More examples to coming soon.
 
-You can find some examples of how to use this library in different scenarios in the [examples]()
+You can find some examples of how to use this library in different scenarios in the [examples](https://github.com/jrgokavalsa/angular-tanstack-adapter/tree/main/src/app/examples)
