@@ -1,24 +1,23 @@
 <div class="tanstack-table">
   <h2>Grouping</h2>
   @if (table) {
-  <table aria-describedby="tanstack table grouping implementation in angular">
+  <table aria-describedby="tanstack table rowediting implementation in angular">
     <thead>
       @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
       <tr>
         @for (header of headerGroup.headers; track header.id) {
         <th [attr.colSpan]="header.colSpan">
-          @if (!header.isPlaceholder) { @if (header.column.getCanGroup()) {
-          <button id="group-btn" (click)="header.column.toggleGrouping()">
-            <span class="material-icons-sharp">
-              {{header.column.getIsGrouped()?'remove_circle_outline':'add_circle_outline'}}
-            </span>
-          </button>
+          @if(!header.isPlaceholder){
           <ng-container
-            *flexRender="header.column.columnDef.header;props:header.getContext let header"
+            *flexRender="
+                header.column.columnDef.header;
+                props: header.getContext();
+                let header
+              "
           >
-            <span>{{header}}</span>
+            {{ header }}
           </ng-container>
-          } }
+          }
         </th>
         }
       </tr>
@@ -29,38 +28,20 @@
       <tr>
         @for (cell of row.getVisibleCells(); track cell.id) {
         <td>
-          @if (cell.getIsGrouped()) {
-          <button (click)="row.toggleExpanded();">
-            <span class="material-icons-sharp">
-              {{row.getIsExpanded()?'expand_less':'expand_more'}}
-            </span>
-          </button>
           <ng-container
             *flexRender="
-                  cell.column.columnDef.cell;
-                  props: cell.getContext();
-                  let cell
-                "
+                            cell.column.columnDef.cell;
+                            props: cell.getContext();
+                            let value
+                          "
           >
-            <span>{{ cell }}</span>
+            <input
+              type="text"
+              [value]="value"
+              #input
+              (blur)="table.options.meta?.updateData(row.index,cell.column.id,input.value)"
+            />
           </ng-container>
-          } @else if (cell.getIsAggregated()) {
-          <ng-container
-            *flexRender="
-                  cell.column.columnDef.aggregatedCell;
-                  props: cell.getContext();
-                  let aggregatedCell
-                "
-          >
-            {{ aggregatedCell }}
-          </ng-container>
-          } @else if(cell.getIsPlaceholder()) { } @else {
-          <ng-container
-            *flexRender="cell.column.columnDef.cell,props:cell.getContext(); let cell"
-          >
-            {{cell}}
-          </ng-container>
-          }
         </td>
         }
       </tr>
@@ -68,7 +49,6 @@
     </tbody>
   </table>
   }
-
   <div class="pagination-container">
     <div></div>
     <div class="pagination-actions">

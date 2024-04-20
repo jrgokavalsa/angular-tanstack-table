@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect, signal } from '@angular/core';
 import {
   SortingState,
   Table,
@@ -21,18 +21,15 @@ import { Person } from '../utils/person';
   imports: [FlexRenderDirective],
 })
 export class SortingComponent implements OnInit {
-  private destroy$ = new Subject<void>();
-  sortingState = new BehaviorSubject<SortingState>([]);
+  readonly sorting = signal<SortingState>([]);
+  // #sortingEffect = effect(() => {
+  //   console.log(`The sorting state is: ${this.sorting()}`);
+  // });
   data: Person[] = mockData(10);
   table!: Table<Person>;
 
   ngOnInit() {
     this.createTable();
-    this.sortingState
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (sortingState) => (this.table.options.state.sorting = sortingState)
-      );
   }
 
   createTable() {
@@ -40,22 +37,18 @@ export class SortingComponent implements OnInit {
       data: this.data,
       columns: columns,
       state: {
-        sorting: this.sortingState.getValue(),
+        sorting: this.sorting(),
       },
       onSortingChange: (updaterOrValue) => {
-        const sorting =
+        const sortingState =
           typeof updaterOrValue == 'function'
-            ? updaterOrValue([...this.sortingState.getValue()])
+            ? updaterOrValue(this.sorting())
             : updaterOrValue;
-        this.sortingState.next(sorting);
+        this.sorting.set(sortingState);
       },
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
       debugTable: true,
     });
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

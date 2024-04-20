@@ -1,0 +1,55 @@
+<h2>Select</h2>
+<div class="virtual-container">
+  @if (table) {
+  <cdk-virtual-scroll-viewport itemSize="50" style="height: 100%">
+    <table
+      style="width: 100%"
+      aria-describedby="tanstack table with virtual scrolling"
+    >
+      <thead
+        [style.top]="inverseOfTranslation + 'px'"
+        style="position: sticky; z-index: 100; background-color: #f9fafb"
+      >
+        @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
+        <tr class="sticky-header">
+          @for (header of headerGroup.headers; track header.id) {
+          <th [attr.colSpan]="header.colSpan">
+            @if (!header.isPlaceholder) {
+            <div (click)="header.column.toggleSorting()">
+              <ng-container
+                *flexRender="header.column.columnDef.header;props:header.getContext()
+                            let
+                            sortHeader"
+              >
+                {{sortHeader}} @if (header.column.getCanSort()) {
+                <span class="material-icons-sharp">
+                  {{header.column.getIsSorted()==='asc'?
+                  'arrow_drop_up':(header.column.getIsSorted() === 'desc' ?
+                  'arrow_drop_down' : '')}}
+                </span>
+                }
+              </ng-container>
+            </div>
+            }
+          </th>
+          }
+        </tr>
+        }
+      </thead>
+      <tbody>
+        <tr *cdkVirtualFor="let row of table.getRowModel().rows">
+          @for (cell of row.getVisibleCells(); track cell.id) {
+          <td>
+            <ng-container
+              *flexRender="cell.column.columnDef.cell;props:cell.getContext() let contentCell"
+            >
+              {{contentCell}}
+            </ng-container>
+          </td>
+          }
+        </tr>
+      </tbody>
+    </table>
+  </cdk-virtual-scroll-viewport>
+  }
+</div>

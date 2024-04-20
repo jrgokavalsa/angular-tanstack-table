@@ -32,6 +32,20 @@ export const routes: Routes = [
             (mod) => mod.SelectingComponent
           ),
       },
+      {
+        path: 'row-editing',
+        loadComponent: () =>
+          import('./examples/rowediting/editing').then(
+            (mod) => mod.RowEditingComponent
+          ),
+      },
+      {
+        path: 'virtual',
+        loadComponent: () =>
+          import('./examples/virtual/virtual').then(
+            (mod) => mod.VirtualComponent
+          ),
+      },
     ],
   },
 ];

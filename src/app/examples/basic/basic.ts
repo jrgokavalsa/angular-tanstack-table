@@ -1,10 +1,13 @@
-import { CommonModule } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ColumnDef, Table, getCoreRowModel } from '@tanstack/table-core';
 import {
+  ColumnDef,
   FlexRenderDirective,
+  Table,
   createAngularTable,
+  getCoreRowModel,
 } from 'angular-tanstack-table';
+import { ResizableDirective } from '../../shared/directives/resizeColumn';
 import { Person } from '../utils/person';
 
 const defaultColumns: ColumnDef<Person>[] = [
@@ -74,7 +77,19 @@ const defaultData: Person[] = [
   selector: 'tanstack-basic',
   templateUrl: 'basic.html',
   standalone: true,
-  imports: [CommonModule, FlexRenderDirective],
+  imports: [NgIf, NgFor, FlexRenderDirective, ResizableDirective],
+  styles: `
+   th{&:not(:last-child) {
+        .resize-holder {
+          cursor: col-resize;
+          width: 20px;
+          height: 100%;
+          position: absolute;
+          right: -10px;
+          top: 0;
+          z-index: 1;
+        }
+      }}`,
 })
 export class BasicComponent implements OnInit {
   data: Person[] = [];

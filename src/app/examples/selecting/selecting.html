@@ -6,7 +6,10 @@
       @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
       <tr>
         @for (header of headerGroup.headers; track header.id) {
-        <th [attr.colSpan]="header.colSpan">
+        <th
+          [attr.colSpan]="header.colSpan"
+          (click)="header.column.toggleSorting()"
+        >
           @if (!header.isPlaceholder) { @if (header.id=='select') {
           <input
             type="checkbox"
@@ -19,7 +22,13 @@
           <ng-container
             *flexRender="header.column.columnDef.header;props:header.getContext() let headerCell"
           >
-            {{headerCell}}
+            {{headerCell}} @if (header.column.getCanSort()) {
+            <span class="material-icons-sharp">
+              {{header.column.getIsSorted()==='asc'?
+              'arrow_drop_up':(header.column.getIsSorted() === 'desc' ?
+              'arrow_drop_down' : '')}}
+            </span>
+            }
           </ng-container>
           @if(header.column.getCanFilter()){
           <Filter [column]="header.column" [table]="table"></Filter>
@@ -67,7 +76,7 @@
             (change)="table.toggleAllPageRowsSelected()"
           />
         </th>
-        <th [attr.colspan]="20">
+        <th [attr.colspan]="6">
           Page Rows ({{table.getRowModel().rows.length}})
         </th>
       </tr>

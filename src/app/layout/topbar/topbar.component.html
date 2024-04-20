@@ -8,9 +8,18 @@
     </button>
   </div>
   <div class="right">
-    <div class="theme-toggler">
-      <span class="material-icons-sharp active">light_mode</span>
-      <span class="material-icons-sharp">dark_mode</span>
+    <div class="theme-toggler" (click)="toggleTheme()">
+      <span
+        class="material-icons-sharp"
+        [ngClass]="{ active: enableDarkMode === false }"
+        >light_mode</span
+      >
+      <span
+        class="material-icons-sharp"
+        [ngClass]="{ active: enableDarkMode === true }"
+      >
+        dark_mode
+      </span>
     </div>
     <div class="profile">
       <div class="info">

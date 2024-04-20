@@ -1,20 +1,18 @@
-import { CommonModule } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   ExpandedState,
+  FlexRenderDirective,
   GroupingState,
   PaginationState,
   Table,
   Updater,
+  createAngularTable,
   getCoreRowModel,
   getExpandedRowModel,
   getFilteredRowModel,
   getGroupedRowModel,
   getPaginationRowModel,
-} from '@tanstack/table-core';
-import {
-  FlexRenderDirective,
-  createAngularTable,
 } from 'angular-tanstack-table';
 import { BehaviorSubject, Subject, combineLatest, takeUntil } from 'rxjs';
 import { mockData } from '../utils/mockdata';
@@ -24,7 +22,7 @@ import { columns } from './column';
 @Component({
   selector: 'tanstack-grouping',
   templateUrl: 'grouping.html',
-  imports: [CommonModule, FlexRenderDirective],
+  imports: [NgIf, NgFor, FlexRenderDirective],
   standalone: true,
 })
 export class GroupingComponent implements OnInit {

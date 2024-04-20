@@ -4,15 +4,18 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  signal,
 } from '@angular/core';
 import {
   ColumnFiltersState,
   PaginationState,
   RowSelectionState,
+  SortingState,
   Table,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
 } from '@tanstack/table-core';
 import {
   FlexRenderDirective,
@@ -40,6 +43,7 @@ export class SelectingComponent implements OnInit {
     pageSize: 10,
   } as PaginationState);
   private columnFilterState = new BehaviorSubject<ColumnFiltersState>([]);
+  sortingState = signal<SortingState>([]);
   data: Person[] = mockData(10000);
 
   constructor(private cdr: ChangeDetectorRef) {}
@@ -48,9 +52,9 @@ export class SelectingComponent implements OnInit {
     this.createTable();
     combineLatest([this.rowSelectionState, this.paginationState])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([rowSelectionState, pState]) => {
+      .subscribe(([rowSelectionState, paginationState]) => {
         this.table.options.state.rowSelection = rowSelectionState;
-        this.table.options.state.pagination = pState;
+        this.table.options.state.pagination = paginationState;
         this.cdr.detectChanges();
       });
   }
@@ -62,6 +66,7 @@ export class SelectingComponent implements OnInit {
         rowSelection: this.rowSelectionState.getValue(),
         pagination: this.paginationState.getValue(),
         columnFilters: this.columnFilterState.getValue(),
+        sorting: this.sortingState(),
       },
       enableRowSelection: true,
       onRowSelectionChange: (updaterOrValue) => {
@@ -87,9 +92,17 @@ export class SelectingComponent implements OnInit {
         this.table.options.state.columnFilters = filter;
         this.columnFilterState.next(filter);
       },
+      onSortingChange: (updaterOrValue) => {
+        const sorting =
+          typeof updaterOrValue == 'function'
+            ? updaterOrValue([...this.sortingState()])
+            : updaterOrValue;
+        this.sortingState.set(sorting);
+      },
       getCoreRowModel: getCoreRowModel(),
       getFilteredRowModel: getFilteredRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
+      getSortedRowModel: getSortedRowModel(),
       debugTable: true,
     });
   }

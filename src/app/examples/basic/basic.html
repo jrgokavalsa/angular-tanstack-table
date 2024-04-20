@@ -7,7 +7,7 @@
       <tr>
         @for (header of headerGroup.headers; track header.id) { @if
         (!header.isPlaceholder) {
-        <th>
+        <th resizable>
           <ng-container
             *flexRender="
                 header.column.columnDef.header;

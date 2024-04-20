@@ -1,6 +1,6 @@
 {
   "name": "angular-tanstack-table",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "tanstack table adapter for angular",
   "author": {
     "name": "Janakirao Gokavalsa",

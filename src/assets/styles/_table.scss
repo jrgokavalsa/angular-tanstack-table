@@ -1,0 +1,74 @@
+table {
+  background: var(--color-white);
+  width: 100%;
+  border-radius: var(--card-border-radius);
+  padding: var(--padding-1);
+  text-align: center;
+  border-spacing: 0;
+  transition: all 300ms ease;
+  &:hover {
+    box-shadow: none;
+  }
+  thead {
+    th {
+      border-bottom: 1px solid var(--color-light);
+      text-align: left;
+      padding: 1rem;
+
+      button {
+        color: var(--color-primary);
+        border: none;
+        border-radius: var(--border-radius-2);
+        cursor: pointer;
+        font-size: var(--font-size);
+        transition: background-color 0.3s ease;
+      }
+
+      span {
+        margin-left: 10px;
+        font-size: var(--font-size);
+        color: var(--color-dark);
+        vertical-align: middle;
+      }
+    }
+  }
+  tbody {
+    td {
+      height: 2.8rem;
+      border-bottom: 1px solid var(--color-light);
+      color: var(--color-dark-variant);
+      text-align: left;
+      padding: 1rem;
+
+      button {
+        color: var(--color-white);
+        border: none;
+        border-radius: var(--border-radius-2);
+        cursor: pointer;
+        font-size: var(--font-size);
+        transition: background-color 0.3s ease;
+      }
+
+      span {
+        margin-left: 10px;
+        font-size: var(--font-size);
+        color: var(--color-dark);
+        vertical-align: middle;
+      }
+    }
+    tr {
+      &:last-child {
+        td {
+          border: none;
+        }
+      }
+    }
+  }
+  tfoot {
+    th {
+      border-top: 1px solid var(--color-light);
+      text-align: left;
+      padding: 1rem;
+    }
+  }
+}
